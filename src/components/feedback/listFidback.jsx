@@ -1,5 +1,6 @@
-import React from 'react';
 import css from '../feedback/feedback.module.css';
+import PropTypes from 'prop-types';
+
 export const ListFeedback = ({ good, netural, bad, total }) => {
   return (
     <ul className={css.list__text}>
@@ -34,4 +35,11 @@ export const ListFeedback = ({ good, netural, bad, total }) => {
       </li>
     </ul>
   );
+};
+
+ListFeedback.propTypes = {
+  good: PropTypes.string.isRequired,
+  bad: PropTypes.string.isRequired,
+  natural: PropTypes.string.isRequired,
+  total: PropTypes.string.isRequired,
 };

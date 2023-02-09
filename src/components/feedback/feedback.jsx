@@ -1,119 +1,81 @@
 import css from '../feedback/feedback.module.css';
-import React, { Component } from 'react';
 import { ListButton } from './listButton';
+import { useState } from 'react';
 
-export class Feedback extends Component {
-  static defaultProps = {
-    good: 0,
-    netural: 0,
-    bad: 0,
-    total: 0,
-    positiveFeedback: 0,
-    visible: false,
+export const Feedback = () => {
+  const [good, setGood] = useState(0);
+  const [netural, setNatural] = useState(0);
+  const [bad, setBad] = useState(0);
+  const [total, setTotal] = useState(0);
+
+  const goodHendler = () => {
+    setGood(good + 1);
+    totalHendler();
   };
 
-  state = {
-    good: this.props.good,
-    netural: this.props.netural,
-    bad: this.props.bad,
-    total: this.props.total,
-    positiveFeedback: this.props.positiveFeedback,
-    visible: this.visible,
+  const neturalHendler = () => {
+    setNatural(netural + 1);
+    totalHendler();
   };
 
-  show = () => {
-    this.setState({
-      visible: true,
-    });
+  const badHendler = () => {
+    setBad(bad + 1);
+    totalHendler();
   };
 
-  goodHendler = () => {
-    this.setState(prevState => ({
-      good: prevState.good + 1,
-    }));
-    this.totalHendler();
-    this.show();
+  const totalHendler = () => {
+    setTotal(total + 1);
+    positiveFeedbackHandler();
   };
 
-  neturalHendler = () => {
-    this.setState(prevState => ({
-      netural: prevState.netural + 1,
-    }));
-    this.totalHendler();
-    this.show();
+  const positiveFeedbackHandler = () => {
+    return Math.round((good / total) * 100);
   };
-
-  badHendler = () => {
-    this.setState(prevState => ({
-      bad: prevState.bad + 1,
-    }));
-    this.totalHendler();
-    this.show();
-  };
-
-  totalHendler = () => {
-    this.setState(prevState => ({
-      total: (prevState.total =
-        prevState.netural + prevState.good + prevState.bad),
-    }));
-    this.positiveFeedback();
-  };
-
-  positiveFeedback = () => {
-    this.setState(prevState => ({
-      positiveFeedback: (prevState.positiveFeedback = Math.round(
-        (prevState.good / prevState.total) * 100
-      )),
-    }));
-  };
-
-  render() {
-    return (
-      <div className={css.container}>
-        <h2 className={css.title}>Please leave feedback</h2>
-        <h3 className={css.title__text}>Statistics</h3>
-        <ListButton
-          goodHendler={this.goodHendler}
-          neturalHendler={this.neturalHendler}
-          badHendler={this.badHendler}
-        />
-        {this.state.visible ? (
-          <ul className={css.list__text}>
-            <li className={css.list__text__item}>
-              <p>
-                Good: <span className={css.span__text}>{this.state.good}</span>
-              </p>
-            </li>
-            <li className={css.list__text__item}>
-              <p>
-                Neutral:
-                <span className={css.span__text}>{this.state.netural}</span>
-              </p>
-            </li>
-            <li className={css.list__text__item}>
-              <p>
-                Bad:<span className={css.span__text}>{this.state.bad}</span>
-              </p>
-            </li>
-            <li className={css.list__text__item}>
-              <p>
-                Total:
-                <span className={css.span__text__red}>{this.state.total}</span>
-              </p>
-            </li>
-            <li className={css.list__text__item}>
-              <p>
-                Positive feedback:
-                <span className={css.span__text__red}>
-                  {this.state.positiveFeedback}%
-                </span>
-              </p>
-            </li>
-          </ul>
-        ) : (
-          <p className={css.text__message}>There is no feedback</p>
-        )}
-      </div>
-    );
-  }
-}
+  return (
+    <div className={css.container}>
+      <h2 className={css.title}>Please leave feedback</h2>
+      <h3 className={css.title__text}>Statistics</h3>
+      <ListButton
+        goodHendler={goodHendler}
+        neturalHendler={neturalHendler}
+        badHendler={badHendler}
+      />
+      {good || bad || netural || total ? (
+        <ul className={css.list__text}>
+          <li className={css.list__text__item}>
+            <p>
+              Good: <span className={css.span__text}>{good}</span>
+            </p>
+          </li>
+          <li className={css.list__text__item}>
+            <p>
+              Neutral:
+              <span className={css.span__text}>{netural}</span>
+            </p>
+          </li>
+          <li className={css.list__text__item}>
+            <p>
+              Bad:<span className={css.span__text}>{bad}</span>
+            </p>
+          </li>
+          <li className={css.list__text__item}>
+            <p>
+              Total:
+              <span className={css.span__text__red}>{total}</span>
+            </p>
+          </li>
+          <li className={css.list__text__item}>
+            <p>
+              Positive feedback:
+              <span className={css.span__text__red}>
+                {positiveFeedbackHandler()}%
+              </span>
+            </p>
+          </li>
+        </ul>
+      ) : (
+        <p className={css.text__message}>There is no feedback</p>
+      )}
+    </div>
+  );
+};
