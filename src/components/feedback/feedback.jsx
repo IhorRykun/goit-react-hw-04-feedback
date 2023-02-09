@@ -9,22 +9,22 @@ export const Feedback = () => {
   const [total, setTotal] = useState(0);
 
   const goodHendler = () => {
-    setGood(good + 1);
+    setGood(prevState => prevState + 1);
     totalHendler();
   };
 
   const neturalHendler = () => {
-    setNatural(netural + 1);
+    setNatural(prevState => prevState + 1);
     totalHendler();
   };
 
   const badHendler = () => {
-    setBad(bad + 1);
+    setBad(prevState => prevState + 1);
     totalHendler();
   };
 
   const totalHendler = () => {
-    setTotal(total + 1);
+    setTotal(prevState => prevState + 1);
     positiveFeedbackHandler();
   };
 
